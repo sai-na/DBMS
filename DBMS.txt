@@ -1449,6 +1449,71 @@ Transactions are crucial for ensuring data integrity, especially in scenarios wh
 
 
 
+
+
+
+///
+RECORD 
+
+START TRANSACTION ;
+SET AUTOCOMMIT = 0 ;
+SAVE POINT S1;
+SELECT * FROM expxt1
+
+
+INSERT INTO expxt1 values(2000,9999);
+select * from expxt1;
+
+ROLLBACK to save point s1;
+
+
+select * from expxt1;
+
+
+INSERT INTO expxt1 values(2000,9999);
+
+commit;
+
+ROLLBACK to save point s1;  -- error
+
+
+
+
+
+user
+dcl commands
+
+
+create user sss IDENTIFIED by "s123";
+grand update , select , Insert on db_name  to sss
+
+revoke update , select , Insert on db_name to sss
+
+
+///
+
+
+CREATE VIEW vw_combined AS
+   SELECT * 
+    FROM TABLE1 t1
+    JOIN TABLE2 t2 ON t2.col = t1.col
+
+
+
+
+syntax
+
+
+DROP VIEW IF EXISTS yourview;
+
+CREATE VIEW yourview AS
+    SELECT table1.column1, 
+    table2.column2
+FROM 
+table1, table2 
+WHERE table1.column1 = table2.column1;
+
+
 ///////////////////////////////////////////
 
 
