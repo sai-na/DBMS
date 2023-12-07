@@ -1490,6 +1490,10 @@ grand update , select , Insert on db_name  to sss
 revoke update , select , Insert on db_name to sss
 
 
+
+GRANT ALL ON *.* TO john@localhost;  
+FLUSH PRIVILEGES ;
+
 ///
 
 
@@ -1606,6 +1610,70 @@ Be cautious when granting privileges, and only give the necessary permissions to
 /////////////////////////////////////////////////////////////////
 
 
+Certainly! The `ORDER BY` and `LIKE` clauses are SQL keywords used for sorting results and filtering based on patterns, respectively. Here are the syntax and examples for each:
 
+### 1. **ORDER BY Clause**:
 
+The `ORDER BY` clause is used to sort the result set based on one or more columns. It can be used in a `SELECT` statement.
+
+**Syntax:**
+```sql
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC | DESC], column2 [ASC | DESC], ...;
+```
+
+- `ASC`: Ascending order (default).
+- `DESC`: Descending order.
+
+**Example:**
+```sql
+-- Sort employees by their salary in descending order
+SELECT employee_name, salary
+FROM employees
+ORDER BY salary DESC;
+```
+
+### 2. **LIKE Operator**:
+
+The `LIKE` operator is used in a `WHERE` clause to search for a specified pattern in a column.
+
+**Syntax:**
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name LIKE pattern;
+```
+
+- `%`: Represents zero or more characters.
+- `_`: Represents a single character.
+
+**Example:**
+```sql
+-- Find customers whose names start with 'A'
+SELECT customer_name
+FROM customers
+WHERE customer_name LIKE 'A%';
+```
+
+**Example with `_`:**
+```sql
+-- Find products with a specific pattern in the product code
+SELECT product_name, product_code
+FROM products
+WHERE product_code LIKE 'P_%';
+```
+
+In the above example, `P_%` means the product code should start with 'P_' where '_' can be any single character.
+
+You can also combine `ORDER BY` and `LIKE` in a single query:
+
+```sql
+-- Find products with a specific pattern and order them by product name
+SELECT product_name, product_code
+FROM products
+WHERE product_code LIKE 'P%'
+ORDER BY product_name ASC;
+```
+////////////////
 
