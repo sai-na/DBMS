@@ -1,0 +1,144 @@
+create database book;
+use book;
+ create table BOOK(
+    Book_id int primary key,
+     Title varchar(255) ,
+     Publisher_name varchar(255));
+
+
+CREATE TABLE BOOK_AUTHORS (
+    Book_id INT,
+    Author_name VARCHAR(255),
+    PRIMARY KEY (Book_id, Author_name),
+    FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id)
+);
+
+create table BORROWER(
+    Card_no int primary key ,
+    Name varchar(255) ,
+    Address varchar(255),
+    Phone varchar(12));
+
+create table LIBRARY_BRANCH (
+    Branch_id int primary key,
+    Bracnch_name varchar(255),
+    Address varchar(255));
+
+CREATE TABLE BOOK_COPIES (Book_id int ,
+Branch_id int ,
+No_of_copies int , 
+primary key (Book_id, Branch_id) , 
+foreign key (Book_id) references BOOK(Book_id) ,
+foreign key (Branch_id) references LIBRARY_BRANCH(Branch_id)
+ );
+
+
+CREATE TABLE BOOK_LOANS (Book_id int ,
+Branch_id int ,
+Card_no int , 
+Date_out Date,
+Due_date Date,
+primary key (Book_id, Branch_id , Card_no) , 
+foreign key (Book_id) references BOOK(Book_id) ,
+foreign key (Branch_id) references LIBRARY_BRANCH(Branch_id),
+foreign key (Card_no) references BORROWER(Card_no)
+ );
+
+
+
+-> Print the titles of books whose number of copies is greater than 5.
+ select BOOK.Title from Book 
+ join BOOK_COPIES  on BOOK.Book_id = BOOK_COPIES.Book_id
+ where BOOK_COPIES.No_of_copies> 5 ;
+
+
+->Print the names of customers who have taken more than three books.
+
+SELECT DISTINCT BORROWER.Name
+FROM BORROWER
+JOIN BOOK_LOANS ON BORROWER.Card_no = BOOK_LOANS.Card_no
+GROUP BY BORROWER.Card_no
+HAVING COUNT(BOOK_LOANS.Book_id) > 3;
+
+
+-> customer id and name due date finished
+SELECT BORROWER.Card_no, BORROWER.Name
+FROM BORROWER
+JOIN BOOK_LOANS ON BORROWER.Card_no = BOOK_LOANS.Card_no
+WHERE Due_date < CURDATE();
+
+
+
+
+
+
+
+
+INSERT INTO BOOK (Book_id, Title, Publisher_name) VALUES
+(1, 'The Great Gatsby', 'Scribner'),
+(2, 'To Kill a Mockingbird', 'HarperCollins'),
+(3, '1984', 'Penguin Books'),
+(4, 'Pride and Prejudice', 'Penguin Classics');
+
+INSERT INTO BOOK_AUTHORS (Book_id, Author_name) VALUES
+(1, 'Jane Doe'),
+(1, 'John Smith'),
+(2, 'Alice Johnson'),
+(3, 'Bob Miller'),
+(3, 'Jane Doe');
+
+
+INSERT INTO BOOK (Book_id, Title, Publisher_name) VALUES
+(1, 'The Great Gatsby', 'Scribner'),
+(2, 'To Kill a Mockingbird', 'HarperCollins'),
+(3, '1984', 'Penguin Books'),
+(4, 'Pride and Prejudice', 'Penguin Classics');
+
+
+INSERT INTO BOOK_AUTHORS (Book_id, Author_name) VALUES
+(1, 'F. Scott Fitzgerald'),
+(2, 'Harper Lee'),
+(2, 'John Doe'), -- Assuming multiple authors for a book
+(3, 'George Orwell'),
+(4, 'Jane Austen');
+
+
+INSERT INTO BORROWER (Card_no, Name, Address, Phone) VALUES
+(1, 'John Doe', '123 Main St, Cityville', '555-1234'),
+(2, 'Alice Smith', '456 Oak St, Townsville', '555-5678'),
+(3, 'Bob Johnson', '789 Pine St, Villageton', '555-9101'),
+(4, 'Emily White', '101 Cedar St, Hamletown', '555-1122');
+
+
+INSERT INTO LIBRARY_BRANCH (Branch_id, Bracnch_name, Address) VALUES
+(1, 'City Central Library', '123 Main St, Cityville'),
+(2, 'Town Library', '456 Oak St, Townsville'),
+(3, 'Village Library', '789 Pine St, Villageton'),
+(4, 'Hamlet Town Library', '101 Cedar St, Hamletown');
+
+
+INSERT INTO BOOK_COPIES (Book_id, Branch_id, No_of_copies) VALUES
+(1, 1, 5),
+(1, 2, 3),
+(2, 1, 8),
+(3, 3, 10),
+(4, 4, 6);
+
+
+
+INSERT INTO BOOK_LOANS (Book_id, Branch_id, Card_no, Date_out, Due_date) VALUES
+(1, 1, 1, '2023-01-01', '2023-01-15'),
+(2, 2, 2, '2023-02-01', '2023-02-15'),
+(3, 3, 3, '2023-03-01', '2023-03-15'),
+(4, 4, 4, '2023-04-01', '2023-04-15');
+
+
+
+
+
+
+INSERT INTO BOOK_LOANS (Book_id, Branch_id, Card_no, Date_out, Due_date) VALUES
+(1, 2, 1, '2023-01-01', '2023-01-15'),
+(2, 2, 1, '2023-02-01', '2023-02-15'),
+(3, 3, 1, '2023-03-01', '2023-03-15'),
+(4, 4, 1, '2023-04-01', '2023-04-15');

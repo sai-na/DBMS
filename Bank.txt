@@ -1,0 +1,16 @@
+create database bank;
+
+use bank;
+
+
+
+-> Bank
+        create table Bank (Bank_Id int primary key , Bank_Name varchar(255));
+        describe Bank;
+        insert into Bank (Bank_Id, Bank_Name) values(1,"yes bank");
+        insert into Bank values (2,"SBI") ,(3,"federal bank") , (4,"canara bank");
+
+
+-> Account
+        create table Account (Acc_No int primary key , Acc_Type varchar(100),Cust_Id int , Balance int , foreign key (Cust_Id) references Bank(Bank_Id) );
+        describe Account;

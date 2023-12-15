@@ -1,0 +1,39 @@
+create database vihicle;
+
+ use vihicle;
+
+ create table owner(Owner_id int primary key);
+
+
+ create table  company(Cname int primary key auto_increment , Caddress varchar(255) , Owner_id int , foreign key (Owner_id) references owner(Owner_id));
+
+
+ create table person(Ssn int primary key auto_increment ,Driver_license_no  varchar(255),Name varchar(255),Address varchar(255),Owner_id int , foreign key (Owner_id) references owner(Owner_id));
+
+ create table registered_vehicle(Vechicle_id int primary key auto_increment,License_plate_number
+ varchar(12));
+
+
+ ALTER TABLE registered_vehicle
+CHANGE COLUMN Vechicle_id Vehicle_id   int primary key auto_increment;
+
+
+
+  create table car (Vechicle_id int primary key , Cstyle varchar(255) , Cmake varchar(255) , Cmodel varchar(255) , Cyear int (4) );
+
+  
+ALTER TABLE car
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (Vechicle_id )
+REFERENCES registered_vehicle (Vechicle_id);
+
+
+ create table owns(
+     Owner_id int,
+     Vehicle_id int,
+     Purchase_date date,
+     Lien_or_regular varchar(255),
+     primary key (Owner_id,Vehicle_id),
+     foreign key (Owner_id) references owner(Owner_id) ,
+     foreign key (Vehicle_id) references registered_vehicle(Vechicle_id) 
+     );

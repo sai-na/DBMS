@@ -175,6 +175,9 @@ ALTER TABLE users ADD age VARCHAR(3);
 ```sql
 ALTER TABLE users MODIFY COLUMN age INT(3);
 ```
+ALTER TABLE table_name
+CHANGE COLUMN old_column_name new_column_name datatype;
+
 
 ## Order By (Sort)
 
@@ -1516,6 +1519,20 @@ CREATE VIEW yourview AS
 FROM 
 table1, table2 
 WHERE table1.column1 = table2.column1;
+
+
+CREATE VIEW yourview AS
+    SELECT
+        table1.column1,
+        table2.column2,
+        table3.column3,
+        table4.column4
+    FROM
+        table1
+    JOIN table2 ON table1.common_column = table2.common_column
+    JOIN table3 ON table1.common_column = table3.common_column
+    JOIN table4 ON table1.common_column = table4.common_column;
+
 
 
 ///////////////////////////////////////////

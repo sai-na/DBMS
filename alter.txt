@@ -1,0 +1,99 @@
+how to add primary key after create the table
+
+ALTER TABLE table_name
+ADD PRIMARY KEY (column_name);
+
+eg: alter table BOOK add primary key (Book_id);
+
+how to add foreign key after create the table
+
+ALTER TABLE child_table
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (child_column)
+REFERENCES parent_table (parent_column);
+
+eg:
+ALTER TABLE car
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (Vechicle_id )
+REFERENCES registered_vehicle (Vechicle_id);
+
+
+eg : 
+ALTER TABLE Orders
+ADD CONSTRAINT fk_Customer
+FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID);
+
+
+
+drop
+
+
+To remove a primary key or a foreign key constraint from a table, you can use the `ALTER TABLE` statement with the `DROP` clause. Here are the basic syntax examples:
+
+### Drop Primary Key:
+
+```sql
+ALTER TABLE table_name
+DROP PRIMARY KEY;
+```
+
+Replace `table_name` with the actual name of your table.
+
+### Drop Foreign Key:
+
+```sql
+ALTER TABLE child_table
+DROP FOREIGN KEY fk_constraint_name;
+```
+
+Replace `child_table` with the child table containing the foreign key, and `fk_constraint_name` with the name of the foreign key constraint you want to remove.
+
+For example, if you have a table named `Orders` with a foreign key named `fk_Customer` that you want to remove, the syntax would be:
+
+```sql
+ALTER TABLE Orders
+DROP FOREIGN KEY fk_Customer;
+```
+
+Remember to execute these SQL statements carefully, as dropping a primary key or a foreign key will permanently remove the associated constraints. Make sure to adjust the table and constraint names based on your specific database schema.
+
+If you have any specific scenarios or questions, feel free to provide more details for further assistance.
+
+
+
+
+When you want to define multiple columns as primary keys in a table (creating a composite primary key), you can use the following syntax:
+
+```sql
+CREATE TABLE your_table_name (
+    column1_data_type,
+    column2_data_type,
+    PRIMARY KEY (column1, column2)
+);
+```
+
+Here's an example using your `BOOK_AUTHORS` table:
+
+```sql
+CREATE TABLE BOOK_AUTHORS (
+    Book_id INT,
+    Author_name VARCHAR(255),
+    PRIMARY KEY (Book_id, Author_name),
+    FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id)
+);
+```
+
+In this example, the composite primary key consists of both `Book_id` and `Author_name`. Adjust the column names and data types according to your specific requirements.
+
+Remember that the combination of values in the specified columns must be unique for each row in the table when you define a composite primary key.
+
+If you have any further questions or if there's anything specific you'd like assistance with, feel free to let me know!
+
+ALTER TABLE table_name
+CHANGE COLUMN old_column_name new_column_name datatype;
+
+
+eg : ALTER TABLE employee
+CHANGE COLUMN Ssn Employee_id INT;

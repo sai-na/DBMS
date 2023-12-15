@@ -1,0 +1,60 @@
+
+
+
+CREATE TABLE employee (
+    Fname VARCHAR(255),
+    Mname VARCHAR(255),
+    Lname VARCHAR(255),
+    Ssn INT AUTO_INCREMENT PRIMARY KEY,
+    Bdate DATE,
+    Address VARCHAR(255),
+    Sex CHAR(1),
+    Salary INT,
+    Super_ssn INT,
+    Dno INT
+);
+
+-- Inserting data into the employee table
+INSERT INTO employee (Fname, Mname, Lname, Bdate, Address, Sex, Salary, Super_ssn, Dno)
+VALUES
+("Amit", "Kumar", "Sharma", "1990-05-15", "Delhi, India", "M", 75000, 102, 3),
+("Priya", "Rani", "Verma", "1985-08-22", "Mumbai, India", "F", 80000, 103, 1),
+("Rajesh", "Singh", "Yadav", "1992-12-10", "Lucknow, India", "M", 70000, 101, 3),
+("Pooja", "Sharma", "Srivastava", "1988-04-18", "Kolkata, India", "F", 90000, 104, 2),
+("Sandeep", "Kumar", "Gupta", "1995-07-25", "Bangalore, India", "M", 85000, 101, 1);
+
+
+
+create table department (
+    Dname varchar(255) ,
+    Dnumber int auto_increment primary key,
+    Msg_ssn int , Msg_start_date date , 
+    foreign key(Msg_ssn) references employee(Ssn)
+    );
+
+insert into department (Dname , Msg_ssn,Msg_start_date) values ("Research" ,1,"2020-07-03");
+insert into department (Dname , Msg_ssn,Msg_start_date) values ("IT" ,2,"2020-07-03" );
+insert into department (Dname , Msg_ssn,Msg_start_date) values ("HR" ,3,"2020-07-03" );
+
+
+->Retrieve the name and address of all employees who work for the ‘Research’
+department.
+
+select Fname , Lname from employee join department on employee.Dno = department.Dnumber where Dname="Research";
+
+
+ create table project (
+    Pname varchar(255),
+    Pnumber int primary key auto_increment ,
+    Plocation varchar(255),Dnum int ,
+    foreign key (Dnum) references department(Dnumber));
+
+insert into project (Pname,Plocation,Dnum) values
+                    ("pro1" , "tcr" , 1),
+                    ("pro2" , "kozhikode" ,2),
+                    ("pro3" , "malappuram" , 1);
+
+
+->  Create a view by selecting Dname, Mgr_ssn, Pname and Plocation where the
+department number matches
+create view yourview as select department.Dname ,department.Msg_ssn, project.Pname , project.Plocation from department , project where department.Dnumber = project.Dnum;

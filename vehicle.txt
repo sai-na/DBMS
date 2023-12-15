@@ -1,0 +1,164 @@
+create database vehicle;
+
+ use vehicle;
+
+ create table owner(Owner_id int primary key);
+
+
+ create table  company(Cname int primary key auto_increment , Caddress varchar(255) , Owner_id int , foreign key (Owner_id) references owner(Owner_id));
+
+
+ create table person(Ssn int primary key auto_increment ,Driver_license_no  varchar(255),Name varchar(255),Address varchar(255),Owner_id int , foreign key (Owner_id) references owner(Owner_id));
+
+ create table registered_vehicle(Vehicle_id int primary key auto_increment,License_plate_number
+ varchar(12));
+
+
+ ALTER TABLE registered_vehicle
+CHANGE COLUMN Vehicle_id Vehicle_id   int primary key auto_increment;
+
+
+
+  create table car (Vehicle_id int primary key , Cstyle varchar(255) , Cmake varchar(255) , Cmodel varchar(255) , Cyear int (4) );
+
+  
+ALTER TABLE car
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (Vehicle_id )
+REFERENCES registered_vehicle (Vehicle_id);
+
+
+ create table owns(
+     Owner_id int,
+     Vehicle_id int,
+     Purchase_date date,
+     Lien_or_regular varchar(255),
+     primary key (Owner_id,Vehicle_id),
+     foreign key (Owner_id) references owner(Owner_id) ,
+     foreign key (Vehicle_id) references registered_vehicle(Vehicle_id) 
+     );
+
+
+
+     -- Insert data into owner table
+INSERT INTO owner (Owner_id) VALUES
+(1),
+(2),
+(3);
+
+-- Insert data into company table
+INSERT INTO company (Cname, Caddress, Owner_id) VALUES
+(101, 'ABC Motors', 1),
+(102, 'XYZ Automobiles', 2),
+(103, 'PQR Vehicles', 3);
+
+-- Insert data into person table
+INSERT INTO person (Ssn, Driver_license_no, Name, Address, Owner_id) VALUES
+(1001, 'DL123456', 'Rahul Kumar', 'Delhi, India', 1),
+(1002, 'DL789012', 'Sneha Sharma', 'Mumbai, India', 2),
+(1003, 'DL345678', 'Amit Singh', 'Bangalore, India', 3);
+
+-- Insert data into registered_vehicle table
+INSERT INTO registered_vehicle (Vehicle_id, License_plate_number) VALUES
+(10001, 'DL01AB1234'),
+(10002, 'MH02CD5678'),
+(10003, 'KA03EF9012');
+
+-- Insert data into car table
+INSERT INTO car (Vehicle_id, Cstyle, Cmake, Cmodel, Cyear) VALUES
+(10001, 'Sedan', 'Maruti', 'Baleno', 2022),
+(10002, 'SUV', 'Hyundai', 'Creta', 2021),
+(10003, 'Hatchback', 'Tata', 'Altroz', 2023);
+
+-- Insert data into owns table
+INSERT INTO owns (Owner_id, Vehicle_id, Purchase_date, Lien_or_regular) VALUES
+(1, 10001, '2022-01-15', 'Regular'),
+(2, 10002, '2021-05-20', 'Lien'),
+(3, 10003, '2023-03-10', 'Regular');
+
+
+
+
+-- Insert data into owner table
+INSERT INTO owner (Owner_id) VALUES
+(4);
+
+-- Insert data into person table for the same owner
+INSERT INTO person (Ssn, Driver_license_no, Name, Address, Owner_id) VALUES
+(1004, 'DL456789', 'Amit Kumar', 'Chennai, India', 4);
+
+-- Insert data into registered_vehicle table for the same owner
+INSERT INTO registered_vehicle (Vehicle_id, License_plate_number) VALUES
+(10004, 'TN04GH5678'),
+(10005, 'DL05IJ9012'),
+(10006, 'KA06KL3456');
+
+-- Insert data into car table for the same owner
+INSERT INTO car (Vehicle_id, Cstyle, Cmake, Cmodel, Cyear) VALUES
+(10004, 'Sedan', 'Honda', 'City', 2020),
+(10005, 'Hatchback', 'Ford', 'Figo', 2019),
+(10006, 'SUV', 'Kia', 'Seltos', 2021);
+
+-- Insert data into owns table for the same owner and multiple vehicles
+INSERT INTO owns (Owner_id, Vehicle_id, Purchase_date, Lien_or_regular) VALUES
+(4, 10004, '2020-02-28', 'Regular'),
+(4, 10005, '2019-07-15', 'Regular'),
+(4, 10006, '2021-10-05', 'Lien');
+
+
+
+
+-- Insert data into registered_vehicle table for the same owner
+INSERT INTO registered_vehicle (Vehicle_id, License_plate_number) VALUES
+(10007, 'MH07MN8901');
+
+-- Insert data into car table for the same owner
+INSERT INTO car (Vehicle_id, Cstyle, Cmake, Cmodel, Cyear) VALUES
+(10007, 'Convertible', 'Mercedes', 'E-Class', 2022);
+
+-- Insert data into owns table for the same owner and the additional vehicle
+INSERT INTO owns (Owner_id, Vehicle_id, Purchase_date, Lien_or_regular) VALUES
+(4, 10007, '2022-04-15', 'Regular');
+
+
+
+
+-->Print all the Licence_plate_numbers,model name of all the cars of a particular"
+owner .
+
+SELECT rv.License_plate_number, c.Cmodel
+FROM owns o
+JOIN registered_vehicle rv ON o.Vehicle_id = rv.Vehicle_id
+JOIN car c ON o.Vehicle_id = c.Vehicle_id
+WHERE o.Owner_id = 1; -- Replace 1 with the actual Owner_id you're interested in
+
+
+SELECT registered_vehicle.License_plate_number, car.Cmodel
+FROM owns
+JOIN registered_vehicle ON owns.Vehicle_id = registered_vehicle.Vehicle_id
+JOIN car ON owns.Vehicle_id = car.Vehicle_id
+WHERE owns.Owner_id = 1; -- Replace 1 with the actual Owner_id you're interested in
+
+
+
+
+
+
+
+
+-->Print the Licence_plate_number and Cmodel  of all cars of a particular owner
+who has more than 3 vehicles.
+
+
+SELECT p.Ssn, p.Name, COUNT(o.Vehicle_id) AS Vehicle_count
+FROM person p
+JOIN owns o ON p.Owner_id = o.Owner_id
+GROUP BY p.Ssn, p.Name
+HAVING Vehicle_count > 3;
+
+
+SELECT person.Ssn, person.Name, COUNT(owns.Vehicle_id) AS Vehicle_count
+FROM person
+JOIN owns ON person.Owner_id = owns.Owner_id
+GROUP BY person.Ssn, person.Name
+HAVING Vehicle_count > 3;
